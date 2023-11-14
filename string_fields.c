@@ -9,26 +9,28 @@
  */
 char *get_precision(char *p, params_t *params, va_list ap)
 {
-int d = 0;
+    int precision = 0;
 
-if (*p != 'a')
-{
-return (p);
-}
-p++;
-if (*p == '*')
-{
-d = va_arg(ap, int);
-p++;
-}
-else
-{
-while (_isdigit(*p))
-{
-d = d * 10 + (*p++ - '0');
-}
-}
-params->precision = d;
-return (p);
+    if (*p != '%' || !p[1])
+        return (p);
+
+    p++;
+
+    if (*p == '*')
+    {
+        precision = va_arg(ap, int);
+        p++;
+    }
+    else
+    {
+        while (_isdigit(*p))
+        {
+            precision = precision * 10 + (*p - '0');
+            p++;
+        }
+    }
+
+    params->precision = precision;
+    return p;
 }
 
